@@ -1,0 +1,29 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>ChannelAdam.Nancy.Soap</id>
+    <version>1.0.0</version>
+    <title>ChannelAdam Nancy SOAP Library</title>
+    <authors>Adam Craven</authors>
+    <owners>Adam Craven</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>https://github.com/channeladam/ChannelAdam.Nancy.Soap</projectUrl>
+    <iconUrl>https://devzone.channeladam.com/img/channeladam/channeladam-logo.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>A library of helpers and extensions for working with SOAP payloads in the Nancy web framework.</description>
+    <releaseNotes>
+1.0.0 - Initial release.
+    </releaseNotes>
+    <copyright>Copyright 2016 Adam Craven</copyright>
+    <tags>Nancy, SOAP 1.1, SOAP 1.2, Request, Response, Helper, Extensions</tags>
+    <dependencies>
+      <dependency id="ChannelAdam.Nancy" version="1.0.0" />
+      <dependency id="ChannelAdam.Soap" version="1.0.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\**\ChannelAdam.Nancy.Soap.dll" target="lib" />
+    <file src="bin\Release\**\ChannelAdam.Nancy.Soap.pdb" target="lib" />
+    <file src="**\*.cs" exclude="obj\**\*;bin\**\*" target="src" />
+  </files>
+</package>
