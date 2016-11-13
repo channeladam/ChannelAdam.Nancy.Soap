@@ -49,6 +49,10 @@
       <HintPath>..\packages\Nancy.1.4.3\lib\net40\Nancy.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Polly, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Polly.4.3.0\lib\net40\Polly.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -59,7 +63,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstractions\INancySoapAdapter.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="NancySoapAdapter.cs" />
+    <Compile Include="NancySoapAdapterBootstrapper.cs" />
     <Compile Include="Soap11NancyResponseFactory.cs" />
     <Compile Include="Soap12NancyResponseFactory.cs" />
     <Compile Include="SoapNancyRequestExtensions.cs" />
@@ -70,6 +77,7 @@
     <None Include="ChannelAdam.Nancy.Soap.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

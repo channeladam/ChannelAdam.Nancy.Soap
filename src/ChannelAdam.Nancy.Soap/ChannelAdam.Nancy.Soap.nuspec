@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>ChannelAdam.Nancy.Soap</id>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <title>ChannelAdam Nancy SOAP Library</title>
     <authors>Adam Craven</authors>
     <owners>Adam Craven</owners>
@@ -12,13 +12,15 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>A library of helpers and extensions for working with SOAP payloads in the Nancy web framework.</description>
     <releaseNotes>
+1.1.0 - Added NancySoapAdapter for defining routes and processing SOAP actions.
 1.0.0 - Initial release.
     </releaseNotes>
     <copyright>Copyright 2016 Adam Craven</copyright>
-    <tags>Nancy, SOAP 1.1, SOAP 1.2, Request, Response, Helper, Extensions</tags>
+    <tags>Nancy, SOAP 1.1, SOAP 1.2, Route, Routing, Request, Response, Helper, Extensions</tags>
     <dependencies>
       <dependency id="ChannelAdam.Nancy" version="1.0.0" />
       <dependency id="ChannelAdam.Soap" version="1.0.1" />
+      <dependency id="Polly" version="4.3.0" />
     </dependencies>
   </metadata>
   <files>
