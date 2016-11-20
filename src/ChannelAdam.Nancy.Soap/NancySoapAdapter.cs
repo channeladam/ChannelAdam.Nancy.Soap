@@ -77,12 +77,12 @@ namespace ChannelAdam.Nancy.Soap
 
         #region Public Methods
 
-        public dynamic ProcessRequest(string routePattern, Request request)
+        public Response ProcessRequest(string routePattern, Request request)
         {
             return ProcessRequest(routePattern, request, null);
         }
 
-        public dynamic ProcessRequest(string routePattern, Request request, dynamic requestRouteArgs)
+        public Response ProcessRequest(string routePattern, Request request, dynamic requestRouteArgs)
         {
             if (request == null)
             {

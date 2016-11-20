@@ -23,9 +23,9 @@ namespace ChannelAdam.Nancy.Soap.Abstractions
 
     public interface INancySoapAdapter
     {
-        dynamic ProcessRequest(string routePattern, Request request);
+        Response ProcessRequest(string routePattern, Request request);
 
-        dynamic ProcessRequest(string routePattern, Request request, dynamic requestRouteArgs);
+        Response ProcessRequest(string routePattern, Request request, dynamic requestRouteArgs);
 
         void RegisterSoapActionHandler(string routePattern, string soapAction, NancyRequestHandler handler);
 

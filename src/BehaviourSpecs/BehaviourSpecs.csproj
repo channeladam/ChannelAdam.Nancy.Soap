@@ -121,7 +121,7 @@
     <Compile Include="SpecFlowOutputPrettifier.cs" />
     <Compile Include="TestCaseNancyModule.cs" />
     <Compile Include="TestCaseSoapActions.cs" />
-    <Compile Include="TestCaseUrls.cs" />
+    <Compile Include="TestCaseRoutes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

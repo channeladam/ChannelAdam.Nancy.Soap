@@ -21,14 +21,14 @@ namespace BehaviourSpecs
         private const string NancyBaseUrl = "http://localhost:8087";
 
         private const string HelloWorldSampleRouteUrl = "/MySampleSoap11Service";
-        private const string HelloWorldSampleAction1 = "urn:MySoap11Service#HelloWorldSoapAction";
+        private const string HelloWorldSampleAction1 = "urn:MySampleSoap11Service#HelloWorldSoapAction";
         private const string HelloWorldSampleAction1ExpectedResponse =
 @"<env:Envelope xmlns:env=""http://schemas.xmlsoap.org/soap/envelope/"">
   <env:Body>
     <root>Hello SOAP World!</root>
   </env:Body>
 </env:Envelope>";
-        private const string HelloWorldSampleAction2 = "urn:MySoap11Service#AnotherSoapAction";
+        private const string HelloWorldSampleAction2 = "urn:MySampleSoap11Service#AnotherSoapAction";
         private const string HelloWorldSampleAction2ExpectedResponse =
 @"<env:Envelope xmlns:env=""http://schemas.xmlsoap.org/soap/envelope/"">
   <env:Body>
