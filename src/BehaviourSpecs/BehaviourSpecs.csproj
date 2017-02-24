@@ -40,7 +40,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="ChannelAdam.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b5cc5a4db964eb79, processorArchitecture=MSIL">
-      <HintPath>..\packages\ChannelAdam.Core.1.4.2\lib\net45\ChannelAdam.Core.dll</HintPath>
+      <HintPath>..\packages\ChannelAdam.Core.1.5.2\lib\net45\ChannelAdam.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ChannelAdam.Nancy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -51,8 +51,8 @@
       <HintPath>..\packages\ChannelAdam.Nancy.Hosting.Self.1.0.0\lib\net403\ChannelAdam.Nancy.Hosting.Self.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ChannelAdam.Soap, Version=1.0.0.0, Culture=neutral, PublicKeyToken=53aac2a65af93c61, processorArchitecture=MSIL">
-      <HintPath>..\packages\ChannelAdam.Soap.1.0.1\lib\portable-net403+sl50+netcore45+wpa81+wp8\ChannelAdam.Soap\ChannelAdam.Soap.dll</HintPath>
+    <Reference Include="ChannelAdam.Soap, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ChannelAdam.Soap.1.0.3\lib\net40\ChannelAdam.Soap.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ChannelAdam.TestFramework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9fcb9bb550152cab, processorArchitecture=MSIL">
@@ -129,7 +129,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>NancySoapAdapter.feature.cs</LastGenOutput>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChannelAdam.Nancy.Soap\ChannelAdam.Nancy.Soap.csproj">

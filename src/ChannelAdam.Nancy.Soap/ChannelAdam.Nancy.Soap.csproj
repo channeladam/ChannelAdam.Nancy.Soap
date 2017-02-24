@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ChannelAdam.Nancy.Soap</RootNamespace>
     <AssemblyName>ChannelAdam.Nancy.Soap</AssemblyName>
-    <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -34,15 +34,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ChannelAdam.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b5cc5a4db964eb79, processorArchitecture=MSIL">
-      <HintPath>..\packages\ChannelAdam.Core.1.4.2\lib\net40\ChannelAdam.Core.dll</HintPath>
+      <HintPath>..\packages\ChannelAdam.Core.1.5.2\lib\net40\ChannelAdam.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ChannelAdam.Nancy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ChannelAdam.Nancy.1.0.0\lib\net40\ChannelAdam.Nancy.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ChannelAdam.Soap, Version=1.0.0.0, Culture=neutral, PublicKeyToken=53aac2a65af93c61, processorArchitecture=MSIL">
-      <HintPath>..\packages\ChannelAdam.Soap.1.0.1\lib\portable-net403+sl50+netcore45+wpa81+wp8\ChannelAdam.Soap\ChannelAdam.Soap.dll</HintPath>
+    <Reference Include="ChannelAdam.Soap, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ChannelAdam.Soap.1.0.3\lib\net40\ChannelAdam.Soap.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Nancy, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -75,7 +75,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ChannelAdam.Nancy.Soap.nuspec" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
