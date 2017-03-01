@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>ChannelAdam.Nancy.Soap</id>
-    <version>1.3.0</version>
+    <version>1.3.1</version>
     <title>ChannelAdam Nancy SOAP Library</title>
     <authors>Adam Craven</authors>
     <owners>Adam Craven</owners>
@@ -12,6 +12,7 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>A library of helpers and extensions for working with SOAP payloads in the Nancy web framework.</description>
     <releaseNotes>
+1.3.1 - Catch exception that can occur when trying to parse request body while looking for SOAP action.
 1.3.0 - Target .NET 4.0 instead of 4.0.3 and updated to latest ChannelAdam.Core and ChannelAdam.Soap.
 1.2.0 - Changed signature of INancySoapAdapter.ProcessRequest to return a Nancy Response instead of dynamic.
 1.1.0 - Added NancySoapAdapter for defining routes and processing SOAP actions.

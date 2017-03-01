@@ -22,6 +22,7 @@ namespace ChannelAdam.Nancy.Soap
     using System.Xml.XPath;
 
     using global::Nancy;
+    using System;
 
     public static class SoapNancyRequestHelper
     {
@@ -57,12 +58,22 @@ namespace ChannelAdam.Nancy.Soap
         private static string GetSoapActionFromSoapHeaderActionNode(Request request)
         {
             string requestBody = NancyRequestHelper.GetRequestBodyAsString(request);
-            XElement requestBodyElement = XElement.Parse(requestBody);
 
-            var actionElements = requestBodyElement.XPathSelectElements("/*[local-name()='Header']/*[local-name()='Action']");
-            if (actionElements != null && actionElements.Any())
+            try
             {
-                return actionElements.First().Value;
+                // TODO: handle multi-part messages - don't assume the body can be parsed as XML directly
+                XElement requestBodyElement = XElement.Parse(requestBody);
+
+                var actionElements = requestBodyElement.XPathSelectElements("/*[local-name()='Header']/*[local-name()='Action']");
+                if (actionElements != null && actionElements.Any())
+                {
+                    return actionElements.First().Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"ERROR: {ex.ToString()}");
+                Console.Error.WriteLine($"ERROR: Could not parse the request body as XML:{Environment.NewLine}{requestBody}");
             }
 
             return null;
