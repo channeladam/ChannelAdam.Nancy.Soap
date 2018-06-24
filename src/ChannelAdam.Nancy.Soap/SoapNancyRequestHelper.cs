@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="SoapNancyRequestHelper.cs">
-//     Copyright (c) 2016 Adam Craven. All rights reserved.
+//     Copyright (c) 2016-2018 Adam Craven. All rights reserved.
 // </copyright>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,9 +47,9 @@ namespace ChannelAdam.Nancy.Soap
         private static string GetSoapActionFromHeader(Request request)
         {
             var soapActionHeaderItems = request.Headers["SOAPAction"];
-            if (soapActionHeaderItems != null && soapActionHeaderItems.Any())
+            if (soapActionHeaderItems?.Any() == true)
             {
-                return soapActionHeaderItems.FirstOrDefault().Replace("\"", string.Empty);
+                return soapActionHeaderItems.FirstOrDefault()?.Replace("\"", string.Empty);
             }
 
             return null;
@@ -65,14 +65,14 @@ namespace ChannelAdam.Nancy.Soap
                 XElement requestBodyElement = XElement.Parse(requestBody);
 
                 var actionElements = requestBodyElement.XPathSelectElements("/*[local-name()='Header']/*[local-name()='Action']");
-                if (actionElements != null && actionElements.Any())
+                if (actionElements?.Any() == true)
                 {
                     return actionElements.First().Value;
                 }
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"ERROR: {ex.ToString()}");
+                Console.Error.WriteLine($"ERROR: {ex}");
                 Console.Error.WriteLine($"ERROR: Could not parse the request body as XML:{Environment.NewLine}{requestBody}");
             }
 

@@ -1,14 +1,14 @@
 ﻿using System.Net.Http;
 using System;
 
-using ChannelAdam.Nancy.Soap;
 using ChannelAdam.Nancy;
 using ChannelAdam.Soap;
-using ChannelAdam.TestFramework.MSTest;
 using Nancy.Hosting.Self;
 using Nancy;
 using TechTalk.SpecFlow;
 using ChannelAdam.Nancy.Hosting.Self;
+using ChannelAdam.TestFramework.MSTestV2.Abstractions;
+using ChannelAdam.Nancy.Soap;
 
 namespace BehaviourSpecs
 {
@@ -21,14 +21,18 @@ namespace BehaviourSpecs
         private const string NancyBaseUrl = "http://localhost:8087";
 
         private const string HelloWorldSampleRouteUrl = "/MySampleSoap11Service";
+
         private const string HelloWorldSampleAction1 = "urn:MySampleSoap11Service#HelloWorldSoapAction";
+
         private const string HelloWorldSampleAction1ExpectedResponse =
 @"<env:Envelope xmlns:env=""http://schemas.xmlsoap.org/soap/envelope/"">
   <env:Body>
     <root>Hello SOAP World!</root>
   </env:Body>
 </env:Envelope>";
+
         private const string HelloWorldSampleAction2 = "urn:MySampleSoap11Service#AnotherSoapAction";
+
         private const string HelloWorldSampleAction2ExpectedResponse =
 @"<env:Envelope xmlns:env=""http://schemas.xmlsoap.org/soap/envelope/"">
   <env:Body>
@@ -87,7 +91,7 @@ namespace BehaviourSpecs
             this.nancySoapAdapter.RegisterSoapActionHandler(
                 TestCaseRoutes.MySoap11Service,
                 TestCaseSoapActions.MySoap11ServiceTestAction,
-                (request, routeArgs) =>
+                (request, _) =>
                 {
                     Logger.Log($"Fake service for action '{TestCaseSoapActions.MySoap11ServiceTestAction}' is executing...");
                     Logger.Log("Request message was: " + request.GetRequestBodyAsString());
@@ -140,7 +144,6 @@ namespace BehaviourSpecs
         {
             CallHelloWorldSoapAction(HelloWorldSampleAction1, HelloWorldSampleAction1ExpectedResponse);
         }
-
 
         [When(@"the route is called with the second SOAP action")]
         public void WhenTheRouteIsCalledWithTheSecondSOAPAction()

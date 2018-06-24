@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="NancySoapAdapter.cs">
-//     Copyright (c) 2016 Adam Craven. All rights reserved.
+//     Copyright (c) 2016-2018 Adam Craven. All rights reserved.
 // </copyright>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,10 +21,9 @@ namespace ChannelAdam.Nancy.Soap
     using System.Collections.Generic;
 
     using ChannelAdam.Nancy.Soap.Abstractions;
-    using ChannelAdam.Nancy.Soap;
     using global::Nancy;
-    using Logging;
     using Polly;
+    using ChannelAdam.Logging.Abstractions;
 
     /// <summary>
     /// A handler for processing a Nancy Request.
@@ -89,13 +88,13 @@ namespace ChannelAdam.Nancy.Soap
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var soapAction = request.GetSoapAction();
+            string soapAction = request.GetSoapAction();
             this.logger?.Log($"Request path '{request.Path}' was called with SOAP action '{soapAction}'");
 
             var mapKey = BuildMapKey(routePattern, soapAction);
             if (!this.soapActionRouteToRequestHandlerMap.ContainsKey(mapKey))
             {
-                var error = $"Error: The request handler for route pattern '{routePattern}' with SOAP action '{soapAction}' has not been defined yet";
+                string error = $"Error: The request handler for route pattern '{routePattern}' with SOAP action '{soapAction}' has not been defined yet";
                 this.logger?.Log(error);
                 throw new InvalidOperationException(error);
             }
@@ -123,7 +122,7 @@ namespace ChannelAdam.Nancy.Soap
         public Request TryWaitForRequest(string routePattern, string soapAction, int retryCount, TimeSpan sleepDuration)
         {
             var retryPolicy = Policy.HandleResult<Request>(req => req == null)
-                    .WaitAndRetry(retryCount, retryAttempt => sleepDuration);
+                    .WaitAndRetry(retryCount, _ => sleepDuration);
 
             return retryPolicy.Execute(() => GetLastRequest(routePattern, soapAction));
         }

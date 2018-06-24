@@ -1,5 +1,5 @@
 # ChannelAdam.Nancy.Soap
-A ChannelAdam .NET code library providing helpers for working with SOAP payloads in the Nancy web framework.
+A .NET Standard 2.0 library of helpers and extensions for working with SOAP payloads in the Nancy web framework.
 
 ## Usage Documentation
 Please see https://devzone.channeladam.com/library/channeladam-nancy-soap/

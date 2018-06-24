@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9DE3B67D-582D-477F-B48E-350A011154CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{702C91F0-5D1E-4F42-A474-9849FCF17324}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		GitVersion.yml = GitVersion.yml
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChannelAdam.Nancy.Soap", "src\ChannelAdam.Nancy.Soap\ChannelAdam.Nancy.Soap.csproj", "{5C2B85B9-808F-4A4E-B4D5-6FAA51E32979}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehaviourSpecs", "src\BehaviourSpecs\BehaviourSpecs.csproj", "{A5FCBE57-35F3-4777-AC5F-B43F8CBF2482}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5C2B85B9-808F-4A4E-B4D5-6FAA51E32979}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C2B85B9-808F-4A4E-B4D5-6FAA51E32979}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C2B85B9-808F-4A4E-B4D5-6FAA51E32979}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C2B85B9-808F-4A4E-B4D5-6FAA51E32979}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5FCBE57-35F3-4777-AC5F-B43F8CBF2482}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5FCBE57-35F3-4777-AC5F-B43F8CBF2482}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5FCBE57-35F3-4777-AC5F-B43F8CBF2482}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5FCBE57-35F3-4777-AC5F-B43F8CBF2482}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5C2B85B9-808F-4A4E-B4D5-6FAA51E32979} = {9DE3B67D-582D-477F-B48E-350A011154CC}
+		{A5FCBE57-35F3-4777-AC5F-B43F8CBF2482} = {9DE3B67D-582D-477F-B48E-350A011154CC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9C881A94-229A-421F-982D-31EBA9261485}
+	EndGlobalSection
+EndGlobal
