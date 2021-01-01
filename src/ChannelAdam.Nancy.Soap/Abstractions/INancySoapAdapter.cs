@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="INancySoapAdapter.cs">
-//     Copyright (c) 2016 Adam Craven. All rights reserved.
+//     Copyright (c) 2016-2021 Adam Craven. All rights reserved.
 // </copyright>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,12 +23,12 @@ namespace ChannelAdam.Nancy.Soap.Abstractions
 
     public interface INancySoapAdapter
     {
-        Response ProcessRequest(string routePattern, Request request);
+        Response? ProcessRequest(string routePattern, Request request);
 
-        Response ProcessRequest(string routePattern, Request request, dynamic requestRouteArgs);
+        Response? ProcessRequest(string routePattern, Request request, dynamic requestRouteArgs);
 
         void RegisterSoapActionHandler(string routePattern, string soapAction, NancyRequestHandler handler);
 
-        Request TryWaitForRequest(string routePattern, string soapAction, int retryCount, TimeSpan sleepDuration);
+        Request? TryWaitForRequest(string routePattern, string soapAction, int retryCount, TimeSpan sleepDuration);
     }
 }

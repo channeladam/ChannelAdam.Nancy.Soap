@@ -1,14 +1,22 @@
-﻿using System.Net.Http;
+﻿#nullable disable
 using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 using ChannelAdam.Nancy;
-using ChannelAdam.Soap;
-using Nancy.Hosting.Self;
-using Nancy;
-using TechTalk.SpecFlow;
-using ChannelAdam.Nancy.Hosting.Self;
-using ChannelAdam.TestFramework.MSTestV2.Abstractions;
 using ChannelAdam.Nancy.Soap;
+using ChannelAdam.Soap;
+using ChannelAdam.TestFramework.NUnit.Abstractions;
+
+using Nancy;
+using Nancy.Owin;
+
+using TechTalk.SpecFlow;
 
 namespace BehaviourSpecs
 {
@@ -40,37 +48,77 @@ namespace BehaviourSpecs
   </env:Body>
 </env:Envelope>";
 
-        private static readonly HttpClient MyHttpClient = new HttpClient();
-
+        private readonly ScenarioContext scenarioContext;
         private NancySoapAdapter nancySoapAdapter;
-        private NancyHost nancyHost;
-
+        private HttpClient myHttpClient;
+        private IHost host;
         private string request;
         private string expectedResponse;
         private string actualResponse;
 
         #endregion
 
+        public NancySoapAdapterUnitSteps(ScenarioContext context)
+        {
+            this.scenarioContext = context;
+        }
+
         #region Before/After
 
         [BeforeScenario]
-        public void BeforeScenario()
+        public async Task BeforeScenario()
         {
+            Logger.Log("---------------------------------------------------------------------------");
+            Logger.Log(this.scenarioContext.ScenarioInfo.Title);
+            Logger.Log("---------------------------------------------------------------------------");
+
+            this.myHttpClient = new();
+
             this.nancySoapAdapter = new NancySoapAdapter(base.Logger);
-            this.nancyHost = NancySelfHostFactory.CreateAndStartNancyHostInBackgroundThread(new NancySoapAdapterBootstrapper(this.nancySoapAdapter), new Uri(NancyBaseUrl));
+
+            // Don't use Nancy.Hosting.Self in .NET Core - use Kestrel instead!
+            this.host = new HostBuilder()
+                .ConfigureWebHost(host =>
+                {
+                    host
+                        .UseKestrel(options =>
+                        {
+                            options.ListenLocalhost(8087);
+                            options.AllowSynchronousIO = true; // required by Nancy.Owin for its .NET Framework 4.x functionality ;)
+                        })
+                        .Configure(app =>
+                        {
+                            app.UseExceptionHandler(new ExceptionHandlerOptions {
+                                ExceptionHandler = (context) =>
+                                {
+                                    var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+                                    Logger.Log(exceptionHandlerPathFeature.Error.ToString());
+                                    return Task.CompletedTask;
+                                }
+                            });
+
+                            app.UseOwin(x =>
+                                x.UseNancy(options => options.Bootstrapper = new NancySoapAdapterBootstrapper(this.nancySoapAdapter)));
+                        });
+                }).Build();
+
+            await this.host.StartAsync().ConfigureAwait(false);
         }
 
         [AfterScenario]
-        public void AfterScenario()
+        public async Task AfterScenario()
         {
-            this.nancyHost?.Stop();
+            if (this.host is not null)
+            {
+                await this.host.StopAsync().ConfigureAwait(false);
+            }
         }
 
         #endregion
 
         #region Given
 
-        [Given(@"a valid request for the SOAP 1.1 service")]
+        [Given("a valid request for the SOAP 1.1 service")]
         public void GivenAValidRequestForTheSOAP11Service()
         {
             this.request = SoapBuilder.CreateSoap11Envelope()
@@ -80,7 +128,7 @@ namespace BehaviourSpecs
             Logger.Log("Request: " + this.request);
         }
 
-        [Given(@"the SOAP 1.1 service will respond with a successful payload")]
+        [Given("the SOAP 1.1 service will respond with a successful payload")]
         public void GivenTheSOAPServiceWillRespondWithASuccessfulPayload()
         {
             this.expectedResponse = SoapBuilder.CreateSoap11Envelope()
@@ -100,7 +148,7 @@ namespace BehaviourSpecs
                 });
         }
 
-        [Given(@"two SOAP actions with the same route pattern")]
+        [Given("two SOAP actions with the same route pattern")]
         public void GivenTwoSOAPActionsWithTheSameRoutePattern()
         {
             Logger.Log($"The Sample Soap Nancy Module should have been loaded already with 2 Hello World actions on the same route '{HelloWorldSampleRouteUrl}'");
@@ -110,7 +158,7 @@ namespace BehaviourSpecs
 
         #region When
 
-        [When(@"the request is sent to the SOAP 1.1 service")]
+        [When("the request is sent to the SOAP 1.1 service")]
         public void WhenTheRequestIsSentToTheSOAP11Service()
         {
             Logger.Log("About to wait for a request (that will not come)");
@@ -123,7 +171,7 @@ namespace BehaviourSpecs
 
             Logger.Log("About to send the SOAP request");
             var content = new StringContent(this.request);
-            var responseMsgTask = MyHttpClient.PostAsync($"{NancyBaseUrl}/{TestCaseRoutes.MySoap11Service}", content).ConfigureAwait(true);
+            var responseMsgTask = myHttpClient.PostAsync($"{NancyBaseUrl}/{TestCaseRoutes.MySoap11Service}", content).ConfigureAwait(true);
 
             Logger.Log("About to wait for a request");
             waitedForRequest = this.nancySoapAdapter.TryWaitForRequest(
@@ -139,34 +187,37 @@ namespace BehaviourSpecs
             responseMsg.EnsureSuccessStatusCode();
         }
 
-        [When(@"the route is called with the first SOAP action")]
-        public void WhenTheRouteIsCalledWithTheFirstSOAPAction()
+        [When("the route is called with the first SOAP action")]
+        public async Task WhenTheRouteIsCalledWithTheFirstSOAPAction()
         {
-            CallHelloWorldSoapAction(HelloWorldSampleAction1, HelloWorldSampleAction1ExpectedResponse);
+            await CallHelloWorldSoapActionAsync(HelloWorldSampleAction1, HelloWorldSampleAction1ExpectedResponse).ConfigureAwait(false);
         }
 
-        [When(@"the route is called with the second SOAP action")]
-        public void WhenTheRouteIsCalledWithTheSecondSOAPAction()
+        [When("the route is called with the second SOAP action")]
+        public async Task WhenTheRouteIsCalledWithTheSecondSOAPAction()
         {
-            CallHelloWorldSoapAction(HelloWorldSampleAction2, HelloWorldSampleAction2ExpectedResponse);
+            await CallHelloWorldSoapActionAsync(HelloWorldSampleAction2, HelloWorldSampleAction2ExpectedResponse).ConfigureAwait(false);
         }
 
         #endregion
 
         #region Then
 
-        [Then(@"the correct handler was executed")]
-        [Then(@"the SOAP 1.1 service response is as expected")]
+        [Then("the correct handler was executed")]
+        [Then("the SOAP 1.1 service response is as expected")]
         public void ThenTheSOAP11ServiceResponseIsAsExpected()
         {
-            LogAssert.AreEqual("Response", this.expectedResponse, this.actualResponse);
+            // Remove cross-platform differences
+            var expected = this.expectedResponse.Replace("\r\n", "\n");
+            var actual = this.actualResponse.Replace("\r\n", "\n");
+            LogAssert.AreEqual("Response", expected, actual);
         }
 
         #endregion
 
         #region Private Methods
 
-        private void CallHelloWorldSoapAction(string soapAction, string expectedResponseMessage)
+        private async Task CallHelloWorldSoapActionAsync(string soapAction, string expectedResponseMessage)
         {
             Logger.Log($"About to send the SOAP request for Action: '{soapAction}' to endpoint '{HelloWorldSampleRouteUrl}'");
 
@@ -179,9 +230,8 @@ namespace BehaviourSpecs
             Logger.Log($"SOAP request about to be sent is: {this.request}");
 
             var content = new StringContent(this.request);
-            var responseMsgTask = MyHttpClient.PostAsync($"{NancyBaseUrl}/{HelloWorldSampleRouteUrl}", content).ConfigureAwait(true);
-            var responseMsg = responseMsgTask.GetAwaiter().GetResult();
-            this.actualResponse = responseMsg.Content.ReadAsStringAsync().ConfigureAwait(true).GetAwaiter().GetResult();
+            var responseMsg = await myHttpClient.PostAsync($"{NancyBaseUrl}/{HelloWorldSampleRouteUrl}", content).ConfigureAwait(true);
+            this.actualResponse = await responseMsg.Content.ReadAsStringAsync().ConfigureAwait(true);
             Logger.Log($"Actual response was: {actualResponse}");
             responseMsg.EnsureSuccessStatusCode();
         }

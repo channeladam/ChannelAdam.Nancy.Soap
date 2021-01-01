@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="NancySoapAdapter.cs">
-//     Copyright (c) 2016-2018 Adam Craven. All rights reserved.
+//     Copyright (c) 2016-2021 Adam Craven. All rights reserved.
 // </copyright>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@ namespace ChannelAdam.Nancy.Soap
     /// <param name="request">A Nancy <see cref="Request"/>.</param>
     /// <param name="requestRouteArgs">The values from the URL corresponding to those in the route pattern.</param>
     /// <returns>A Nancy <see cref="Response"/>.</returns>
-    public delegate Response NancyRequestHandler(Request request, dynamic requestRouteArgs);
+    public delegate Response NancyRequestHandler(Request request, dynamic? requestRouteArgs);
 
     /// <summary>
     /// Provides a mechanism to process SOAP messages in Nancy.
@@ -44,9 +44,9 @@ namespace ChannelAdam.Nancy.Soap
         {
             #region Public Properties
 
-            public Request LastRequest { get; set; }
+            public Request? LastRequest { get; set; }
 
-            public NancyRequestHandler RequestHandler { get; set; }
+            public NancyRequestHandler? RequestHandler { get; set; }
 
             #endregion Public Properties
         }
@@ -55,7 +55,7 @@ namespace ChannelAdam.Nancy.Soap
 
         #region Private Fields
 
-        private readonly ISimpleLogger logger;
+        private readonly ISimpleLogger? logger;
         private readonly Dictionary<string, RequestAndHandlerPair> soapActionRouteToRequestHandlerMap;
 
         #endregion Private Fields
@@ -66,7 +66,7 @@ namespace ChannelAdam.Nancy.Soap
         {
         }
 
-        public NancySoapAdapter(ISimpleLogger logger)
+        public NancySoapAdapter(ISimpleLogger? logger)
         {
             this.logger = logger;
             this.soapActionRouteToRequestHandlerMap = new Dictionary<string, RequestAndHandlerPair>();
@@ -76,12 +76,12 @@ namespace ChannelAdam.Nancy.Soap
 
         #region Public Methods
 
-        public Response ProcessRequest(string routePattern, Request request)
+        public Response? ProcessRequest(string routePattern, Request request)
         {
             return ProcessRequest(routePattern, request, null);
         }
 
-        public Response ProcessRequest(string routePattern, Request request, dynamic requestRouteArgs)
+        public Response? ProcessRequest(string routePattern, Request request, dynamic? requestRouteArgs)
         {
             if (request == null)
             {
@@ -119,9 +119,9 @@ namespace ChannelAdam.Nancy.Soap
         /// <param name="retryCount">The number of times to retry detecting whether a request has been received.</param>
         /// <param name="sleepDuration">The duration to sleep between retry attempts.</param>
         /// <returns>The last request that was performed, or null if no request was received.</returns>
-        public Request TryWaitForRequest(string routePattern, string soapAction, int retryCount, TimeSpan sleepDuration)
+        public Request? TryWaitForRequest(string routePattern, string soapAction, int retryCount, TimeSpan sleepDuration)
         {
-            var retryPolicy = Policy.HandleResult<Request>(req => req == null)
+            var retryPolicy = Policy.HandleResult<Request?>(req => req == null)
                     .WaitAndRetry(retryCount, _ => sleepDuration);
 
             return retryPolicy.Execute(() => GetLastRequest(routePattern, soapAction));
@@ -136,9 +136,9 @@ namespace ChannelAdam.Nancy.Soap
             return $"{routePattern}-{soapAction}";
         }
 
-        private Request GetLastRequest(string routePattern, string soapAction)
+        private Request? GetLastRequest(string routePattern, string soapAction)
         {
-            Request result = null;
+            Request? result = null;
 
             var mapKey = BuildMapKey(routePattern, soapAction);
             if (this.soapActionRouteToRequestHandlerMap.ContainsKey(mapKey))

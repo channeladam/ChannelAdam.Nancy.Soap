@@ -13,7 +13,7 @@ namespace BehaviourSpecs
 
         private void DefineSoapRoute(string routePattern, INancySoapAdapter soapAdapter)
         {
-            Post[routePattern] = args => soapAdapter.ProcessRequest(routePattern, base.Request, args);
+            Post(routePattern, args => soapAdapter.ProcessRequest(routePattern, base.Request, args));
         }
     }
 }

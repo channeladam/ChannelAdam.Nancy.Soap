@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="SoapNancyRequestHelper.cs">
-//     Copyright (c) 2016-2018 Adam Craven. All rights reserved.
+//     Copyright (c) 2016-2021 Adam Craven. All rights reserved.
 // </copyright>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,7 @@ namespace ChannelAdam.Nancy.Soap
 
         public static string GetSoapAction(Request request)
         {
-            string soapAction = GetSoapActionFromHeader(request);
+            string? soapAction = GetSoapActionFromHeader(request);
 
             if (string.IsNullOrWhiteSpace(soapAction))
             {
@@ -44,7 +44,7 @@ namespace ChannelAdam.Nancy.Soap
 
         #region Private Methods
 
-        private static string GetSoapActionFromHeader(Request request)
+        private static string? GetSoapActionFromHeader(Request request)
         {
             var soapActionHeaderItems = request.Headers["SOAPAction"];
             if (soapActionHeaderItems?.Any() == true)
@@ -55,7 +55,7 @@ namespace ChannelAdam.Nancy.Soap
             return null;
         }
 
-        private static string GetSoapActionFromSoapHeaderActionNode(Request request)
+        private static string? GetSoapActionFromSoapHeaderActionNode(Request request)
         {
             string requestBody = NancyRequestHelper.GetRequestBodyAsString(request);
 

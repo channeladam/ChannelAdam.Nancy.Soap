@@ -21,7 +21,7 @@ namespace BehaviourSpecs
             soapAdapter.RegisterSoapActionHandler(
                 mySoap11ServiceRoutePattern,
                 "urn:MySampleSoap11Service#HelloWorldSoapAction",
-                (request, routeArgs) =>
+                (_, _) =>
                     Soap11NancyResponseFactory.Create(
                         SoapBuilder.CreateSoap11Envelope().WithBody.AddEntry("<root>Hello SOAP World!</root>"),
                         HttpStatusCode.OK));
@@ -29,7 +29,7 @@ namespace BehaviourSpecs
             soapAdapter.RegisterSoapActionHandler(
                 mySoap11ServiceRoutePattern,
                 "urn:MySampleSoap11Service#AnotherSoapAction",
-                (request, routeArgs) =>
+                (_, _) =>
                     Soap11NancyResponseFactory.Create(
                         SoapBuilder.CreateSoap11Envelope().WithBody.AddEntry("<root>Hello Another SOAP World!</root>"),
                         HttpStatusCode.OK));
@@ -37,7 +37,7 @@ namespace BehaviourSpecs
 
         private void DefineSoapRoute(string routePattern, INancySoapAdapter soapAdapter)
         {
-            Post[routePattern] = args => soapAdapter.ProcessRequest(routePattern, base.Request, args);
+            Post(routePattern, args => soapAdapter.ProcessRequest(routePattern, base.Request, args));
         }
     }
 }
